@@ -1,0 +1,25 @@
+{
+  "name": "property-registration-contracts",
+  "version": "1.0.0",
+  "description": "Hyperledger fabric smart contract for a property registration workflow",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "fabric-chaincode-node start"
+  },
+  "keywords": [
+    "hyperledger",
+    "property-registration"
+  ],
+  "author": "sedhuait@gmail.com",
+  "license": "MIT",
+  "dependencies": {
+    "fabric-contract-api": "^2.2.1",
+    "fabric-shim": "^2.2.1"
+  },
+  "devDependencies": {
+    "eslint": "^7.31.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.23.4"
+  }
+}
