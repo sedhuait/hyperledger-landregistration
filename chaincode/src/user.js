@@ -8,6 +8,8 @@ const Request = require('./models/request');
 
 const TXN_VALUE_MAP = { upg100: 100, upg500: 500, upg1000: 1000 };
 const PROPETY_STATUS = ['registered', 'onSale'];
+
+const USER_MSP_ID = 'usersMSP';
 class UserContract extends Contract {
   constructor() {
     super('org.property-registration.regnet.user');
@@ -22,6 +24,7 @@ class UserContract extends Contract {
   }
 
   async requestNewUser(ctx, aadharNumber, name, emailId, phoneNumber) {
+    this.isValidUser(ctx);
     const userRequestKey = Request.makeKey(['user', name, aadharNumber]);
 
     const existingUserRequest = await ctx.requestStore.getRequest(userRequestKey).catch((err) => console.log('Provided userRequestId is unique!'));
@@ -46,6 +49,7 @@ class UserContract extends Contract {
   }
 
   async rechargeAccount(ctx, aadharNumber, name, bankTransactionId) {
+    this.isValidUser(ctx);
     if (!Object.keys(TXN_VALUE_MAP).includes(bankTransactionId)) {
       throw new Error(`Invalid TransactionId: ${bankTransactionId}`);
     }
@@ -59,6 +63,7 @@ class UserContract extends Contract {
   }
 
   async viewUser(ctx, aadharNumber, name) {
+    this.isValidUser(ctx);
     const userKey = User.makeKey([name, aadharNumber]);
     const existingUser = await ctx.userStore.getUser(userKey).catch((err) => { throw new Error(`User doen't exist with key${userKey}`); });
 
@@ -66,6 +71,7 @@ class UserContract extends Contract {
   }
 
   async propertyRegistrationRequest(ctx, propertyId, aadharNumber, name, price, status) {
+    this.isValidUser(ctx);
     if (!PROPETY_STATUS.includes(status)) {
       throw new Error(`Invalid property status${status}`);
     }
@@ -102,6 +108,7 @@ class UserContract extends Contract {
   }
 
   async viewPropery(ctx, propertyId) {
+    this.isValidUser(ctx);
     const propKey = Property.makeKey([propertyId]);
     const existingProp = await ctx.propertyStore.getProperty(propKey).catch((err) => { throw new Error(`Property doen't exist with key${propKey}`); });
 
@@ -109,6 +116,7 @@ class UserContract extends Contract {
   }
 
   async updateProperty(ctx, propertyId, name, aadharNumber, status) {
+    this.isValidUser(ctx);
     const existingUser = await this.viewUser(ctx, aadharNumber, name).catch((err) => { throw new Error(`User doen't exist with Aadhar:${aadharNumber} and Name:${name}`); });
 
     if (!existingUser) {
@@ -131,6 +139,7 @@ class UserContract extends Contract {
   }
 
   async purchaseProperty(ctx, propertyId, buyerName, buyerAadharNumber) {
+    this.isValidUser(ctx);
     const buyer = await this.viewUser(ctx, buyerAadharNumber, buyerName).catch((err) => { throw new Error(`User doen't exist with Aadhar:${buyerAadharNumber} and Name:${buyerName}`); });
 
     if (!buyer) {
@@ -158,6 +167,12 @@ class UserContract extends Contract {
     existingProp.owner = buyer.key;
 
     await ctx.propertyStore.updateProperty(existingProp);
+  }
+
+  isValidUser(ctx) {
+    if (ctx.clientIdentity.getMSPID() !== USER_MSP_ID) {
+      throw new Error('Access Denied. Incorrect MSP');
+    }
   }
 }
 
