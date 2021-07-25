@@ -27,6 +27,15 @@ class Property {
   static createInstance(propObj) {
     return new Property(propObj);
   }
+
+  static createInstanceFromPropertyRequest({
+    price, status, propertyId, owner, createdAt,
+  }) {
+    const propObj = {
+      price, status, propertyId, owner, createdAt, approvedAt: new Date(),
+    };
+    return Property.createInstance(propObj);
+  }
 }
 
 module.exports = Property;

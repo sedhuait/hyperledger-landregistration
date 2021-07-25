@@ -27,6 +27,15 @@ class User {
   static createInstance(usrObj) {
     return new User(usrObj);
   }
+
+  static createInstanceFromUserRequest({
+    aadharNumber, name, emailId, phoneNumber, createdAt,
+  }) {
+    const userObj = {
+      aadharNumber, name, emailId, phoneNumber, createdAt, upgradCoins: 0, approvedAt: new Date(),
+    };
+    return User.createInstance(userObj);
+  }
 }
 
 module.exports = User;
