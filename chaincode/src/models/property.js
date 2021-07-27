@@ -32,7 +32,13 @@ class Property {
     price, status, propertyId, owner, createdAt,
   }) {
     const propObj = {
-      price, status, propertyId, owner, createdAt, approvedAt: new Date(),
+      price,
+      status,
+      propertyId,
+      owner,
+      createdAt,
+      approvedAt: new Date(),
+      key: Property.makeKey([propertyId]),
     };
     return Property.createInstance(propObj);
   }

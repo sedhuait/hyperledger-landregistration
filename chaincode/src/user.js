@@ -40,7 +40,7 @@ class UserContract extends Contract {
     }
 
     const userInput = {
-      aadharNumber, name, emailId, phoneNumber, createdAt: new Date(), /* key: userRequestKey, */
+      aadharNumber, name, emailId, phoneNumber, createdAt: new Date(), key: userRequestKey,
     };
 
     const reqObj = Request.createInstance(userInput);
@@ -99,7 +99,12 @@ class UserContract extends Contract {
     }
 
     const propertyInput = {
-      createdAt: new Date(), price, status, propertyId, owner: existingUser.key,
+      createdAt: new Date(),
+      price,
+      status,
+      propertyId,
+      owner: existingUser.key,
+      key: propRequestKey,
     };
 
     const reqObj = Property.createInstance(propertyInput);

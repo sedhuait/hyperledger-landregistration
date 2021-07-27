@@ -32,7 +32,14 @@ class User {
     aadharNumber, name, emailId, phoneNumber, createdAt,
   }) {
     const userObj = {
-      aadharNumber, name, emailId, phoneNumber, createdAt, upgradCoins: 0, approvedAt: new Date(),
+      aadharNumber,
+      name,
+      emailId,
+      phoneNumber,
+      createdAt,
+      upgradCoins: 0,
+      approvedAt: new Date(),
+      key: User.makeKey([name, aadharNumber]),
     };
     return User.createInstance(userObj);
   }
