@@ -1,11 +1,16 @@
 {
-  "name": "property-registration-contracts",
-  "version": "1.0.0",
+  "name": "regnet",
+  "version": "1.1.0",
   "description": "Hyperledger fabric smart contract for a property registration workflow",
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "fabric-chaincode-node start"
+    "start": "fabric-chaincode-node start",
+    "start-dev": "fabric-chaincode-node start --peer.address  peer0.users.property-registration-network.com:9053 --chaincode-id-name regnet:1.1"
+  },
+  "engines": {
+    "node": ">=8",
+    "npm": ">=5"
   },
   "keywords": [
     "hyperledger",
@@ -13,9 +18,10 @@
   ],
   "author": "sedhuait@gmail.com",
   "license": "MIT",
+  "engineStrict": true,
   "dependencies": {
-    "fabric-contract-api": "^2.2.1",
-    "fabric-shim": "^2.2.1"
+    "fabric-contract-api": "~1.4.2",
+    "fabric-shim": "~1.4.2"
   },
   "devDependencies": {
     "eslint": "^7.31.0",
