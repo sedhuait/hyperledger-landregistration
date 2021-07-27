@@ -139,12 +139,12 @@ instantiateChaincode() {
   # the "-o" option
   if [ -z "$CORE_PEER_TLS_ENABLED" -o "$CORE_PEER_TLS_ENABLED" = "false" ]; then
     set -x
-    peer chaincode instantiate -o orderer.property-registration-network.com:7050 -C "$CHANNEL_NAME" -n regnet -l "${LANGUAGE}" -v "${VERSION}" -c '{"Args":["org.property-registration-network.regnet:instantiate"]}' -P "OR ('registrarMSP.member','usersMSP.member')" >&log.txt
+    peer chaincode instantiate -o orderer.property-registration-network.com:7050 -C "$CHANNEL_NAME" -n regnet -l "${LANGUAGE}" -v "${VERSION}" -c '{"Args":["org.property-registration.regnet.user:instantiate"]}' -P "OR ('registrarMSP.member','usersMSP.member')" >&log.txt
     res=$?
     set +x
   else
     set -x
-    peer chaincode instantiate -o orderer.property-registration-network.com:7050 --tls "$CORE_PEER_TLS_ENABLED" --cafile $ORDERER_CA -C $CHANNEL_NAME -n regnet -l ${LANGUAGE} -v ${VERSION} -c '{"Args":["org.property-registration-network.regnet:instantiate"]}' -P "OR ('registrarMSP.member','usersMSP.member','upgradMSP.member')" >&log.txt
+    peer chaincode instantiate -o orderer.property-registration-network.com:7050 --tls "$CORE_PEER_TLS_ENABLED" --cafile $ORDERER_CA -C $CHANNEL_NAME -n regnet -l ${LANGUAGE} -v ${VERSION} -c '{"Args":["org.property-registration.regnet.user:instantiate"]}' -P "OR ('registrarMSP.member','usersMSP.member','upgradMSP.member')" >&log.txt
     res=$?
     set +x
   fi
@@ -162,12 +162,12 @@ upgradeChaincode() {
 
   if [ -z "$CORE_PEER_TLS_ENABLED" -o "$CORE_PEER_TLS_ENABLED" = "false" ]; then
     set -x
-    peer chaincode upgrade -o orderer.property-registration-network.com:7050 -C $CHANNEL_NAME -n regnet -l ${LANGUAGE} -v ${VERSION} -p ${CC_SRC_PATH} -c '{"Args":["org.property-registration-network.regnet:instantiate"]}' -P "OR ('registrarMSP.member','usersMSP.member','upgradMSP.member')" >&log.txt
+    peer chaincode upgrade -o orderer.property-registration-network.com:7050 -C $CHANNEL_NAME -n regnet -l ${LANGUAGE} -v ${VERSION} -p ${CC_SRC_PATH} -c '{"Args":["org.property-registration.regnet.user:instantiate"]}' -P "OR ('registrarMSP.member','usersMSP.member','upgradMSP.member')" >&log.txt
     res=$?
     set +x
   else
     set -x
-    peer chaincode upgrade -o orderer.property-registration-network.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n regnet -l ${LANGUAGE} -v ${VERSION} -p ${CC_SRC_PATH} -c '{"Args":["org.property-registration-network.regnet:instantiate"]}' -P "OR ('registrarMSP.member','usersMSP.member','upgradMSP.member')" >&log.txt
+    peer chaincode upgrade -o orderer.property-registration-network.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n regnet -l ${LANGUAGE} -v ${VERSION} -p ${CC_SRC_PATH} -c '{"Args":["org.property-registration.regnet.user:instantiate"]}' -P "OR ('registrarMSP.member','usersMSP.member','upgradMSP.member')" >&log.txt
     res=$?
     set +x
   fi
@@ -194,7 +194,7 @@ chaincodeQuery() {
     sleep $DELAY
     echo "Attempting to Query peer${PEER}.${ORG} ...$(($(date +%s) - starttime)) secs"
     set -x
-    peer chaincode query -C $CHANNEL_NAME -n regnet -c '{"Args":["org.property-registration-network.regnet:instantiate"]}' >&log.txt
+    peer chaincode query -C $CHANNEL_NAME -n regnet -c '{"Args":["org.property-registration.regnet.user:instantiate"]}' >&log.txt
     res=$?
     set +x
     test $res -eq 0 && VALUE=$(cat log.txt | awk '/Query Result/ {print $NF}')
@@ -229,12 +229,12 @@ chaincodeInvoke() {
   # it using the "-o" option
   if [ -z "$CORE_PEER_TLS_ENABLED" -o "$CORE_PEER_TLS_ENABLED" = "false" ]; then
     set -x
-    peer chaincode invoke -o orderer.property-registration-network.com:7050 -C $CHANNEL_NAME -n regnet $PEER_CONN_PARMS -c '{"Args":["org.property-registration-network.regnet:createStudent","0001","Aakash Bansal","connect@aakashbansal.com","15"]}' >&log.txt
+    peer chaincode invoke -o orderer.property-registration-network.com:7050 -C $CHANNEL_NAME -n regnet $PEER_CONN_PARMS -c '{"Args":["org.property-registration.regnet.user:requestNewUser","0001-0002-0003","Sourav Ganguly","connect@Ganguly.com","979144479"]}' >&log.txt
     res=$?
     set +x
   else
     set -x
-    peer chaincode invoke -o orderer.property-registration-network.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n regnet $PEER_CONN_PARMS -c '{"Args":["org.property-registration-network.regnet:createStudent","0001","Aakash Bansal","connect@aakashbansal.com"]}' >&log.txt
+    peer chaincode invoke -o orderer.property-registration-network.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n regnet $PEER_CONN_PARMS -c '{"Args":["org.property-registration.regnet.user:requestNewUser","0001-0002-0003","Sourav Ganguly","connect@Ganguly.com","979144479"]}' >&log.txt
     res=$?
     set +x
   fi
