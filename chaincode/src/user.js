@@ -165,8 +165,13 @@ class UserContract extends Contract {
       throw new Error(`Insufficient balance for user. You need additional ${existingProp.price - buyer.upgradCoins} upgradCoins`);
     }
 
+    const seller = await this.viewUser(existingProp.owner);
+
     buyer.upgradCoins -= existingProp.price;
     await ctx.userStore.updateUser(buyer);
+
+    seller.upgradCoins += existingProp.price;
+    await ctx.userStore.updateUser(seller);
 
     existingProp.status = 'registered';
     existingProp.owner = buyer.key;
