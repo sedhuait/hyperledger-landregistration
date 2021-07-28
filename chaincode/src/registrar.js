@@ -7,6 +7,12 @@ const Property = require('./models/property');
 const Request = require('./models/request');
 
 const REGISTRAR_MSP_ID = 'registrarMSP';
+
+/**
+ * RegistrarContract
+ * - Contains all the smart contract functions related to Registrar
+ * - Uses REGISTRAR_MSP_ID to verfiy access to the smart contract functions
+ */
 class RegistrarContract extends Contract {
   constructor() {
     super('org.property-registration.regnet.registrar');

@@ -10,6 +10,12 @@ const TXN_VALUE_MAP = { upg100: 100, upg500: 500, upg1000: 1000 };
 const PROPETY_STATUS = ['registered', 'onSale'];
 
 const USER_MSP_ID = 'usersMSP';
+
+/**
+ * UserContract
+ * - Contains all smart contract functions related to User Worflow
+ * - Uses USER_MSP_ID for access verification
+ */
 class UserContract extends Contract {
   constructor() {
     super('org.property-registration.regnet.user');
